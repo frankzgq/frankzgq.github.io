@@ -4,6 +4,13 @@
    body 15px. Pages: index.html (About), research.html, teaching.html, papers/*.html; all share this file.
    Portrait: photo.jpg next to index.html, shown at --portrait wide and 4:5 tall, rounded, soft shadow.
    A larger photo can replace photo.jpg as-is; keep --portrait <= 180px unless the photo is at least 2x that. */
+/* Fonts are served from this site (fonts/, latin subset, SIL Open Font Licence, files from Google Fonts on
+   2026-10-26), not from Google: no extra connections, no visitor data to Google, cached with the site. The latin
+   subset covers every character the pages use (incl. í · – — “ ”); add latin-ext files if that changes. */
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/inter-latin.woff2") format("woff2"); }
+@font-face { font-family: 'Source Serif 4'; font-style: normal; font-weight: 400 600; font-display: swap; src: url("fonts/source-serif-4-latin.woff2") format("woff2"); }
+@font-face { font-family: 'Source Serif 4'; font-style: italic; font-weight: 400; font-display: swap; src: url("fonts/source-serif-4-italic-latin.woff2") format("woff2"); }
+
 :root {
   --portrait: 200px;
 
@@ -31,7 +38,9 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
+/* Reserve the scrollbar's space on every page, so a short page (Teaching) does not sit 7.5px further right than
+   the others where the system shows scrollbars. */
+html { -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; }
 body {
   margin: 0; min-height: 100vh;
   background: linear-gradient(180deg, var(--page-top) 0, var(--page) 600px) var(--page);
@@ -58,6 +67,10 @@ ul { list-style: none; margin: 0; padding: 0; }
 .topbar nav a:hover { color: var(--ink); text-decoration: none; border-bottom-color: var(--accent); }
 .topbar nav a[aria-current="page"] { color: var(--ink); font-weight: 500; border-bottom-color: var(--accent); }
 .topbar nav a:last-child { margin-right: 4px; }
+/* Each link is as wide as its own label in the current-page weight, so the bolder current link does not push the
+   others sideways when moving between pages. */
+.topbar nav a { display: inline-flex; flex-direction: column; align-items: center; }
+.topbar nav a::after { content: attr(data-label); font-weight: 500; height: 0; overflow: hidden; visibility: hidden; }
 
 main > .card:first-child { margin-top: 0; }
 .card { background: var(--card); border: 1px solid var(--edge); border-radius: 18px; box-shadow: var(--shadow); }
@@ -143,6 +156,9 @@ h1.name { font-family: var(--serif); font-weight: 400; font-size: clamp(1.8rem, 
 .row .detail { display: block; margin-top: 2px; font-size: 13px; color: var(--muted); }
 .row .detail + .detail { margin-top: 0; }
 .row .detail b { font-weight: 600; color: var(--text); }
+/* Supervisor and advisor names: charcoal with a faint hairline, not rust (Frank, 2026-10-26); rust only on hover. */
+.row .detail a { color: var(--text); font-weight: 500; padding-bottom: 1px; border-bottom: 1px solid var(--rule); }
+.row .detail a:hover { text-decoration: none; color: var(--ink); border-bottom-color: var(--accent); }
 .row.yearfirst { grid-template-columns: 172px minmax(0, 1fr); }
 .row.yearfirst .k { font-variant-numeric: tabular-nums; letter-spacing: 0.06em; }
 
